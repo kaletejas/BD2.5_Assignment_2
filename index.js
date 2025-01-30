@@ -201,7 +201,28 @@ app.get('/stocks/sort/growth',(req,res)=>{
   let sortedStocks = stocksCopy.sort((s1,s2)=>sortByGrowth(s1,s2,growth));
   res.json({stocks : sortedStocks});
 })
-
+//fn 3
+function filterByExchange(stock, exchange){
+  return stock.exchange.toLowerCase() === exchange.toLowerCase();
+}
+app.get('/stocks/filter/exchange',(req,res)=>{
+//Endpoint 3: Filter the stocks based on the 2 Stock Exchange (NSE. and BSE)
+let exchange = req.query.exchange;
+let stocksCopy = stocks.slice();
+  let sortedStocks = stocksCopy.filter(stock => filterByExchange(stock, exchange));
+  res.json({stocks : sortedStocks});
+})
+//fn 4
+function filterByIndustry(stock, industry){
+  return stock.industry.toLowerCase() === industry.toLowerCase();
+}
+//Endpoint 4: Filter the stocks based on the Industrial Sector
+app.get('/stocks/filter/industry',(req,res)=>{
+  let industry = req.query.industry;
+  let stocksCopy = stocks.slice();
+  let sortedStocks = stocksCopy.filter(stock => filterByIndustry(stock, industry));
+  res.json({stocks : sortedStocks});
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
