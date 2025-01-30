@@ -169,6 +169,40 @@ let stocks = [
   },
 ];
 
+app.get('/stocks',(req,res)=>{
+  res.json(stocks);
+})
+//fn 1
+function sortByPrice(s1,s2, pricing){
+  if(pricing === 'low-to-high'){
+    return s1.price - s2.price;
+  }
+  else return s2.price - s1.price;
+}
+//Endpoint 1: Get the stocks sorted by pricing
+app.get('/stocks/sort/pricing',(req,res)=>{
+  let stocksCopy = stocks.slice();
+  let pricing = req.query.pricing;
+  console.log(pricing);
+  let sortedStocks = stocksCopy.sort((s1,s2) => sortByPrice(s1,s2,pricing));
+  res.json({stocks: sortedStocks});
+})
+//fn 2
+function sortByGrowth(s1,s2,growth){
+  if(growth === 'low-to-high'){
+    return s1.growth - s2.growth;
+  }
+  else return s2.growth - s1.growth;
+}
+//Endpoint 2: Get the stocks sorted based on their Growth
+app.get('/stocks/sort/growth',(req,res)=>{
+  let growth = req.query.growth;
+  let stocksCopy = stocks.slice();
+  let sortedStocks = stocksCopy.sort((s1,s2)=>sortByGrowth(s1,s2,growth));
+  res.json({stocks : sortedStocks});
+})
+
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
